@@ -1,0 +1,64 @@
+CREATE TABLE employee(
+fname TEXT NOT NULL,
+	mname CHAR NULL,
+	lname TEXT NOT NULL,
+	ssn CHAR(9) NOT NULL PRIMARY KEY,
+	Bdate DATE,
+	Address TEXT NOT NULL,
+	Salary DECIMAL(10,2) NULL,
+	super_ssn CHAR(9) NULL,
+	Dno INT NOT NULL);
+	
+CREATE TABLE department (
+	Dname TEXT NOT NULL,
+	Dnumber INT NOT NULL PRIMARY KEY,
+	Mgr_ssn CHAR(9) NOT NULL,
+	Mgr_start_date DATE NLL);
+	
+CREATE TABLE dept_locations(
+Dnumber INT NOT NULL,
+	Dlocation TEXT NOT NULL,
+	PRIMARY KEY(Dnumber, Dlocation));
+	
+CREATE TABLE project(
+Pname TEXT NOT NULL,
+Pnumber INT NOT NULL,
+	Plocation TEXT,
+	Dnum INT NOT NULL,
+	PRIMARY KEY(Pnumber),
+	UNIQUE(Pname));
+	
+CREATE TABLE works_on(
+Essn CHAR(9) NOT NULL
+Pno INT NOT NULL,
+	Hours DECIMAL(3,1) NOT NULL,
+	PRIMARY KEY(Essn, Pno));
+
+CREATE TABLE dependent(
+Essn CHAR(9) NOT NULL,
+	Dependent_name TEXT NOT NULL,
+	Bdate DATE,
+	Relationship TEXT,
+	PRIMARY KEY(Essn,Dependent_name) );
+	
+INSERT INTO employee VALUES('John', 'B' , 'Smith', '1965-01-09', '731 Foundren, Houston, '30000', '333445555', '5' );
+INSERT INTO department VALUES('Research', '5', '333445555', '1986-05-21' );
+INSERT INTO dependent VALUES('333445555', 'Theodore', '1996-08-10', 'Son');
+INSERT INTO dept_locations VALUES('1', 'Houston');
+INSERT INTO project VALUES('ProductY', '1', 'Bellaire', '5');
+INSERT INTO works_on VALUES('987654321', '3', '25.5');
+							
+ALTER TABLE department ADD FOREIGN KEY (mgr_ssn) REFERENCES employee(ssn);
+ALTER TABLE employee ADD FOREIGN KEY(Super_ssn) REFERENCES employee(ssn);
+ALTER TABLE employee ADD FOREIGN KEY(Dno) REFERENCES department(Dnumber);
+ALTER TABLE dept_locations ADD FOREIGN KEY(Dnumber) REFERENCES department(Dnumber);
+ALTER TABLE project ADD FOREIGN KEY(Dnum) REFERENCES department(Dnumber);
+ALTER TABLE works_on ADD FOREIGN KEY(Essn) REFERENCES employee(ssn);
+ALTER TABLE works_on ADD FPREIGN KEY(Pno) REFERENCES project(Pnumber);
+ALTER TABLE dependent ADD FOREIGN KEY(Essn) REFERENCES employee(ssn);
+
+SELECT * FROM employee;							
+SELECT * FROM department;
+SELECT * FROM dependent;
+SELECT * FROM dept_locations;
+SELECT * FROM works_on;
